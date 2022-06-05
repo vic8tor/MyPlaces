@@ -12,7 +12,7 @@ class MainViewController: UITableViewController {
     
     // MARK: - Public Properties
     
-    let places = Place.getPlaces()
+    var places = Place.getPlaces()
     
     // MARK: - Private Properties
     
@@ -33,7 +33,7 @@ class MainViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! CustomTableViewCell
         
-        cell.customImageView.image = UIImage(named: places[indexPath.row].restaurantImage)
+        cell.customImageView.image = UIImage(named: places[indexPath.row].restaurantImage!)
         cell.customImageView.layer.cornerRadius = cell.customImageView.frame.size.height / 2
         cell.customImageView.clipsToBounds = true
         cell.nameLabel.text = places[indexPath.row].name
@@ -48,8 +48,11 @@ class MainViewController: UITableViewController {
     }
     
     // MARK: - @IBActions
-    @IBAction func cancelAction(_ segue: UIStoryboardSegue) {
-
+    @IBAction func unwindSegue(_ segue: UIStoryboardSegue) {
+        guard let newPlaceVC = segue.source as? NewPlaceViewController else { return }
+        newPlaceVC.saveNewPlace()
+        places.append(newPlaceVC.newPlace!)
+        tableView.reloadData()
     }
     
     // MARK: - Public Methods
