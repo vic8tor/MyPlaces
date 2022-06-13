@@ -33,10 +33,15 @@ class MainViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! CustomTableViewCell
         
-        cell.customImageView.image = UIImage(named: places[indexPath.row].restaurantImage!)
+        let place = places[indexPath.row]
+        if place.image == nil {
+            cell.customImageView.image = UIImage(named: place.restaurantImage!)
+        } else {
+            cell.customImageView.image = place.image
+        }
         cell.customImageView.layer.cornerRadius = cell.customImageView.frame.size.height / 2
         cell.customImageView.clipsToBounds = true
-        cell.nameLabel.text = places[indexPath.row].name
+        cell.nameLabel.text = place.name
         
         return cell
     }
